@@ -1,7 +1,9 @@
 
 const inputTask = document.getElementById('inputTask');
 const addBtn = document.getElementById('addTaskBtn');
-const container = document.getElementById('container');
+const todoContainer = document.getElementById('todo-container');
+const workingContainer = document.getElementById('working-container');
+const doneContainer = document.getElementById('done-container');
 const editBtn = document.getElementById('editTaskBtn');
 const editInputTask = document.getElementById('editInputTask');
 const modalCloseBtn = document.getElementById('modalCloseBtn');
@@ -23,20 +25,23 @@ addBtn.addEventListener('click', function () {
 })
 
 function renderElements() {
-    let card = "";
+    let todoCards = "";
+    let workingCards = "";
+    let doneCards = "";
+    let todoCount = 0, workingCount = 0, doneCount = 0;
     data.forEach((e) => {
         let task = e.taskName;
         let tId = e.tId;
         let priority = e.priority;
         let progress = e.progress;
+        let card = "";
 
         let priorityBtn = priority == 'high' ? `<span id=${tId} onclick="changePriority(${tId})" type="button" class="text-danger fw-semibold me-1">H</span>` : priority == 'medium' ? `<span id=${tId} onclick="changePriority(${tId})" type="button" class="text-warning fw-semibold me-1">M</span>` : `<span id=${tId} onclick="changePriority(${tId})" type="button" class="text-success fw-semibold me-1">L</span>`;
 
         let progressBtn = progress == "todo" ? `<span id=${tId} onclick="changeProgress(${tId})" type="button" class="text-danger fw-semibold me-1">Todo</span>` : progress == "working" ? `<span id=${tId} onclick="changeProgress(${tId})" type="button" class="text-warning fw-semibold me-1">In-progress</span>` : `<span id=${tId} onclick="changeProgress(${tId})" type="button" class="text-success fw-semibold me-1">Done</span>`;
 
-        card += `<div class="card mt-2" id=${"card"+tId}>
+        card = `<div class="card mt-2" id=${"card"+tId}>
     <div class="card-body d-flex">
-      <input type="checkbox" class="form-check-input me-2" id="doneCheck" />
       <h5 class="card-title" id=${"taskName"+tId}>${task}</h5>
       <div class="position-absolute end-0 me-3">
       ${priorityBtn}${progressBtn}
@@ -51,10 +56,25 @@ function renderElements() {
     </div>
   </div>`;
 
-  
+        if(progress == 'todo') {
+            todoCards += card;
+            todoCount++;
+        } else if(progress == 'working') {
+            workingCards += card;
+            workingCount++;
+        } else if(progress == 'done') {
+            doneCards += card;
+            doneCount++;
+        }
     })
     
-    container.innerHTML = card;
+    document.getElementById('todo-badge').textContent = todoCount;
+    document.getElementById('working-badge').textContent = workingCount;
+    document.getElementById('done-badge').textContent = doneCount;
+
+    todoContainer.innerHTML = todoCards;
+    workingContainer.innerHTML = workingCards;
+    doneContainer.innerHTML = doneCards;
 }
 
 

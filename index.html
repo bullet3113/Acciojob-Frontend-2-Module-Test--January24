@@ -13,7 +13,7 @@
             width: 40vw;
         }
 
-        #container {
+        .container {
             width: 50vw;
         }
     </style>
@@ -30,13 +30,12 @@
         </div>
     </header>
 
-    <section id="todo-container" class="m-auto">
-    </section>
-    <section id="working-container" class="m-auto"></section>
-    <section id="done-container" class="m-auto"></section>
-
-    <section id="container" class="m-auto">
-        <div class="card">
+    <section class="m-auto container">
+        <h6>todo <span id="todo-badge" class="badge bg-primary">0</span></h6>
+        <hr>
+        <div id="todo-container">
+        </div>
+        <!-- <div class="card">
             <div class="card-body d-flex">
                 <input type="checkbox" class="form-check-input me-2" id="doneCheck" />
                 <h5 class="card-title" id="taskName">Sample Task</h5>
@@ -45,7 +44,17 @@
                     <i class="bi bi-trash3"></i>
                 </div>
             </div>
-        </div>
+        </div> -->
+    </section>
+    <section class="m-auto container mt-3">
+        <h6>In-progress <span id="working-badge" class="badge bg-primary">0</span></h6>
+        <hr>
+        <div id="working-container"></div>
+    </section>
+    <section class="m-auto container mt-3">
+        <h6>Completed <span id="done-badge" class="badge bg-primary">0</span></h6>
+        <hr>
+        <div id="done-container"></div>
     </section>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
