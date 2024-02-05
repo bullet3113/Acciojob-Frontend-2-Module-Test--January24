@@ -7,6 +7,7 @@ const doneContainer = document.getElementById('done-container');
 const editBtn = document.getElementById('editTaskBtn');
 const editInputTask = document.getElementById('editInputTask');
 const modalCloseBtn = document.getElementById('modalCloseBtn');
+const suggestions = document.querySelector('.suggestions ul');
 
 let taskId = 1;
 
@@ -141,3 +142,61 @@ function changeProgress(id) {
     renderElements();
     console.log(data)
 }
+
+
+
+// search functionality
+
+
+function search(str) {
+	let results = [];
+	const val = str.toLowerCase();
+
+	for (i = 0; i < data.length; i++) {
+		if (data[i].taskName.toLowerCase().indexOf(val) > -1) {
+			results.push(data[i].taskName);
+		}
+	}
+
+	return results;
+}
+
+function searchHandler(e) {
+	const inputVal = e.currentTarget.value;
+	let results = [];
+	if (inputVal.length > 0) {
+		results = search(inputVal);
+	}
+	showSuggestions(results, inputVal);
+}
+
+function showSuggestions(results, inputVal) {
+    
+    suggestions.innerHTML = '';
+
+	if (results.length > 0) {
+		for (i = 0; i < results.length; i++) {
+			let item = results[i];
+			// Highlights only the first match
+			// TODO: highlight all matches
+			const match = item.match(new RegExp(inputVal, 'i'));
+			item = item.replace(match[0], `<strong>${match[0]}</strong>`);
+			suggestions.innerHTML += `<li>${item}</li>`;
+		}
+		suggestions.classList.add('has-suggestions');
+	} else {
+		results = [];
+		suggestions.innerHTML = '';
+		suggestions.classList.remove('has-suggestions');
+	}
+}
+
+function useSuggestion(e) {
+	inputTask.value = e.target.innerText;
+	inputTask.focus();
+	suggestions.innerHTML = '';
+	suggestions.classList.remove('has-suggestions');
+}
+
+inputTask.addEventListener('keyup', searchHandler);
+suggestions.addEventListener('click', useSuggestion);
