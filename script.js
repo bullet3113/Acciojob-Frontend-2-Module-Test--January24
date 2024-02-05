@@ -2,6 +2,9 @@
 const inputTask = document.getElementById('inputTask');
 const addBtn = document.getElementById('addTaskBtn');
 const container = document.getElementById('container');
+const editBtn = document.getElementById('editTaskBtn');
+const editInputTask = document.getElementById('editInputTask');
+const modalCloseBtn = document.getElementById('modalCloseBtn');
 
 let taskId = 1;
 
@@ -23,12 +26,13 @@ function renderElements() {
     data.forEach((e) => {
         let task = e.taskName;
         let tId = e.tId;
-        card += `<div class="card" id=${"card"+tId}>
+        card += `<div class="card mt-2" id=${"card"+tId}>
     <div class="card-body d-flex">
       <input type="checkbox" class="form-check-input me-2" id="doneCheck" />
-      <h5 class="card-title" id="taskName">${task}</h5>
+      <h5 class="card-title" id=${"taskName"+tId}>${task}</h5>
       <div class="position-absolute end-0 me-3">
-        <i class="bi bi-pencil-square" id=${tId} onclick="editTask(${tId})"></i>
+        <i class="bi bi-pencil-square" data-bs-toggle="modal"
+        data-bs-target="#exampleModal" id=${tId} onclick="editTask(${tId})"></i>
         <i class="bi bi-trash3" id=${tId} onclick="deleteTask(${tId})"></i>
       </div>
     </div>
@@ -40,9 +44,43 @@ function renderElements() {
     container.innerHTML = card;
 }
 
-function editTask(e) {
-    console.log(container.children)
-    console.log(e);
+
+function showModal(id) {
+    let task = {};
+    data.forEach((d) => {
+        if(d.tId == id) task = d;
+    });
+    console.log(task);
+    // console.log()
+    editInputTask.value = task.taskName;
+    editBtn.name = id;
+    // let modal = ``;
+    // console.log(modal)
+//   container.innerHTML += modal;
+}
+
+editBtn.addEventListener('click', function(e) {
+    let tId = editBtn.name;
+    let taskValue = editInputTask.value;
+    console.log(tId)
+    console.log(taskValue)
+    data.forEach((d) => {
+        console.log(d)
+        if(d.tId == tId) {
+            d.taskName = taskValue;
+        }
+    });
+    console.log(data);
+    renderElements();
+});
+
+// modalCloseBtn.addEventListener('click', renderElements);
+
+function editTask(id) {
+
+    showModal(id);
+    // console.log(container.children)
+    // console.log(e);
 }
 
 function deleteTask(id) {
